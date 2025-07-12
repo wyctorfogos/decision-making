@@ -214,7 +214,7 @@ class TOPSIS:
         if verbose:
             print (self.clos_coefficient)
 
-    def plot_ranking(self, alt_names=None, save_path=None, show=True, font_size=16, title="A-TOPSIS test", y_axis_title="Scores", x_axis_title="Methods", font_size=16,
+    def plot_ranking(self, alt_names=None, save_path=None, show=True, font_size=16,
                  title="A-TOPSIS Test", y_axis_title="Scores", x_axis_title="Methods",
                  ascending=True, fig_size=(6, 4)):
         """
@@ -273,19 +273,6 @@ class TOPSIS:
         # plt.xticks(rotation=30, ha='right')
 
         
-        if self.alternatives is not None:
-            alt_names = self.alternatives
-        if alt_names is not None:
-            a = sns.barplot(x=alt_names, y=self.clos_coefficient, hue=self.clos_coefficient, palette="BuGn_d", legend=False)
-        else:
-            temp = [f"A{n}" for n in range(1, len(self.clos_coefficient)+1, 1)]
-            a = sns.barplot(x=temp, y=self.clos_coefficient, hue=self.clos_coefficient, palette="BuGn_d", legend=False)
-        a.set_title(title, fontsize=font_size)
-        a.set_ylabel(y_axis_title, fontsize=font_size)
-        a.set_xlabel(x_axis_title, fontsize=font_size)
-        fig = a.get_figure()
-        plt.tick_params(labelsize=font_size)
-
         if show:
             plt.show()
             # Save or show

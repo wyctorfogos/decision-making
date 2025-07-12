@@ -15,14 +15,12 @@ def main(file_path):
     print("Column names:", df.columns.tolist())
 
     # 3) Métricas consideradas
-    metrics = ["accuracy", "balanced_accuracy", "auc"]
+    metrics = ["accuracy", "balanced_accuracy", "f1_score","auc"]
 
 
     # wanted_model_name = "densenet169"
 
     # Obter as informações referentes ao modelo desejado
-    # df=df[df['model_name'] == wanted_model_name]
-    # df = df[df['attention_mecanism']==["no-metadata", "att-intramodal+residual+cross-attention-metadados"]]
     print(df)
     # 4) Extrai média e desvio padrão
     for m in metrics:
@@ -33,7 +31,7 @@ def main(file_path):
         )
 
     # 5) Agrupa por attention_mecanism e computa média de cada grupo
-    grouped = df.groupby("attention_mecanism").agg(
+    grouped = df.groupby("model_name").agg(
         **{f"{m}_mean": (f"{m}_mean", "mean") for m in metrics},
         **{f"{m}_std":  (f"{m}_std",  "mean") for m in metrics},
     ).reset_index()
@@ -41,12 +39,12 @@ def main(file_path):
     # 6) Prepara as matrizes em memória
     avg_mat = grouped[[f"{m}_mean" for m in metrics]].values.tolist()
     std_mat = grouped[[f"{m}_std"  for m in metrics]].values.tolist()
-    alg_names = grouped["attention_mecanism"].tolist()
+    alg_names = grouped["model_name"].tolist()
     # alg_names = grouped["model_name"].tolist()
     # 7) Executa A‑TOPSIS (listas de listas)
     #    avg_cost_ben="benefit"
     #    std_cost_ben="cost"
-    weights_presetted = [0.7, 0.3]
+    weights_presetted = [0.75, 0.25]
 
     # Executa A‑TOPSIS em memória (listas de listas)
     atop = ATOPSIS(
@@ -65,7 +63,7 @@ def main(file_path):
 
     # 3) Monta o DataFrame de resultado
     result = pd.DataFrame({
-        "attention_mecanism": alg_names,
+        "model_name": alg_names,
         "atopsis_score":       scores
     })
 
@@ -80,9 +78,9 @@ def main(file_path):
     print(result.sort_values("rank"))
 
     # 6) Plota com os próprios nomes
-    atop.plot_ranking(save_path="./images/a_topsis_PAD_UFES_20.png", alg_names=alg_names, show=True, font_size=16, title="", y_axis_title="Scores", x_axis_title="Methods", ascending=True)
+    atop.plot_ranking(save_path="./data/images/a_topsis_PAD_UFES_20.png", alg_names=alg_names, show=True, font_size=16, title="", y_axis_title="Scores", x_axis_title="Methods", ascending=True)
 
 if __name__=="__main__":
-    file_path = "dataset/agg_residual-block-pad-ufes-20.csv"
+    file_path = "./data/agg_residual-block-pad-ufes-20.csv"
     # Função principal
     main(file_path=file_path)
