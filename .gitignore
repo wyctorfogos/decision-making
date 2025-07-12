@@ -154,3 +154,10 @@ cython_debug/
 data/metrics.csv
 a_topsis.png
 data/residual-block-pad-ufes-20-all_metric_values.csv
+
+dataset/agg_metablockse_jbhi.csv
+dataset/arquivo_de_teste_pad-25.csv
+dataset/agg_metablockse_jbhi_pad-25.csv
+a_topsis.png
+images/*
+dataset/*
