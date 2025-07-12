@@ -214,7 +214,7 @@ class TOPSIS:
         if verbose:
             print (self.clos_coefficient)
 
-    def plot_ranking(self, alt_names=None, save_path=None, show=True):
+    def plot_ranking(self, alt_names=None, save_path=None, show=True, font_size=16, title="A-TOPSIS test", y_axis_title="Scores", x_axis_title="Methods"):
         """
         This method plots the ranking, according to the closeness coefficient, in a bar plot.
 
@@ -242,15 +242,17 @@ class TOPSIS:
         else:
             temp = [f"A{n}" for n in range(1, len(self.clos_coefficient)+1, 1)]
             a = sns.barplot(x=temp, y=self.clos_coefficient, hue=self.clos_coefficient, palette="BuGn_d", legend=False)
-        a.set_ylabel("Closeness Coefficient")
-        a.set_xlabel('Alternatives')
+        a.set_title(title, fontsize=font_size)
+        a.set_ylabel(y_axis_title, fontsize=font_size)
+        a.set_xlabel(x_axis_title, fontsize=font_size)
         fig = a.get_figure()
+        plt.tick_params(labelsize=font_size)
 
         if show:
             plt.show()
 
         if save_path is not None:
-            fig.savefig(save_path)
+            fig.savefig(save_path, dpi=400)
 
 ########################################################################################################################
 # Static methods
